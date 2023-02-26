@@ -14,6 +14,7 @@ function alpha = Laplacianmatting (img, trimap)
 % and background labels to determine which pixels belong to the foreground and
 % which pixels belong to the background. These markers are usually done by manually 
 % drawing foreground and background boundaries. That is the trimap.png image.
+
 % Step 2: Construct the Laplace matrix After labeling the foreground and background pixels, 
 % construct the Laplace matrix reflecting the difference between each pixel and its neighbors 
 % in the image. The place where the "difference" is large is likely to be the junction of the 
@@ -45,7 +46,6 @@ fg = trimap > 0.90;             % fg is a matrix as large as the image,
                                 % with an element of 1 indicating that the point is the foreground
 bg = trimap < 0.10;             % In bg, an element of 1 means that the point is background
 unk = ~(fg | bg);               % In unk, an element of 1 means neither foreground nor background, to be confirmed
-
 
 Laplacian = del2(img);          % Calculating the Laplace matrix
 
