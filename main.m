@@ -7,9 +7,9 @@ clear all;
 
 % Step 1 
 % Reading the input image, trimap and GT - alpha matte of that image.
-image = imread('C:\Users\aduttagu\Downloads\input_training_lowres\GT04.png');
-trimap = imread('C:\Users\aduttagu\Downloads\trimap_training_lowres\Trimap1\GT04.png');
-GT = imread("C:\Users\aduttagu\Downloads\gt_training_lowres\GT01.png");
+image = imread('C:\Users\aduttagu\Downloads\input_training_lowres\GT19.png');
+trimap = imread('C:\Users\aduttagu\Downloads\trimap_training_lowres\Trimap1\GT19.png');
+GT = imread("C:\Users\aduttagu\Downloads\gt_training_lowres\GT19.png");
 
 % Step 2
 % Plotting the Input image and trimap for analysis.
@@ -27,7 +27,7 @@ GT = imread("C:\Users\aduttagu\Downloads\gt_training_lowres\GT01.png");
 % in scale of (0-1).
 im = im2double(image);
 trimap = im2double(trimap);
-
+GT = im2double(GT);
 
 % Step 4
 % Initializing all parameters required for the complete process.
@@ -235,7 +235,7 @@ subplot(1, 3, 3);
 imshow(alpha);
 title('Alpha-Matte');
 
-% Step 7
+% Step 7 :
 % Comparing the alpha matte with the laplacian inbuilt function generated
 % alpha matte. (Visual Comparision)
 Lalpha = Laplacianmatting (image, trimap);
@@ -250,4 +250,31 @@ title('Laplacian Matting - Alpha Matte');
 subplot(1, 3, 3);
 imshow(GT);
 title('Ground Truth - Alpha Matte');
+
+% Step 8 :
+% Calculating the SAD between the Groudn Truth and Alpha Matte's obtained
+% from Bayesian and Laplacian Matting.
+GT = GT(:, :, 1);
+
+% diff1 = abs(GT - alpha);
+% % sum_diff1 = sum(diff1(:));
+% plus = 0;
+% for i = 1:length(rty)
+%     plus = plus + rty(i);
+%     disp(plus)
+% end
+K = imabsdiff(alpha, GT);
+K = sum(K(:), "omitnan")/numel(alpha);
+L = imabsdiff(Lalpha, GT);
+L = sum(L(:), "omitnan");
+
+% Step 9 : 
+% % Calculating the MSE between the Ground Truth and Alpha Matte's obtained
+% from Bayesian and Laplacian Matting.
+
+diff3 = (GT - alpha);
+mse3 = mean((diff3(:).^2), "omitnan");
+
+diff4 = (GT - Lalpha);
+mse4 = mean((diff4(:).^2), "omitnan");
 
