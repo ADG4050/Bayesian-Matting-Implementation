@@ -258,6 +258,10 @@ title('Ground Truth - Alpha Matte');
 % Calculating the SAD between the Groudn Truth and Alpha Matte's obtained
 % from Bayesian and Laplacian Matting.
 GT = GT(:, :, 1);
+diff1 = imabsdiff(alpha, GT);
+sumdiff1 = sum(diff1(:), "omitnan");
+diff2 = imabsdiff(Lalpha, GT);
+sumdiff2 = sum(diff2(:), "omitnan");
 
 % Step 9 : 
 % % Calculating the MSE between the Ground Truth and Alpha Matte's obtained
