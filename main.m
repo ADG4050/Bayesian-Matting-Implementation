@@ -7,8 +7,8 @@ clear all;
 
 % Step 1 
 % Reading the input image, trimap and GT - alpha matte of that image.
-image = imread('C:\Users\aduttagu\Downloads\input_training_lowres\GT01.png');
-trimap = imread('C:\Users\aduttagu\Downloads\trimap_training_lowres\Trimap1\GT01.png');
+image = imread('C:\Users\aduttagu\Downloads\input_training_lowres\GT04.png');
+trimap = imread('C:\Users\aduttagu\Downloads\trimap_training_lowres\Trimap1\GT04.png');
 GT = imread("C:\Users\aduttagu\Downloads\gt_training_lowres\GT01.png");
 
 % Step 2
