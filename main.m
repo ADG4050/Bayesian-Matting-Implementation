@@ -8,9 +8,9 @@ clear all;
 % Step 1 
 % Reading the input image, trimap and GT - alpha matte of that image.
 
-image = imread('C:\Users\aduttagu\Downloads\input_training_lowres\GT03.png');
-trimap = imread('C:\Users\aduttagu\Downloads\trimap_training_lowres\Trimap1\GT03.png');
-GT = imread("C:\Users\aduttagu\Downloads\gt_training_lowres\GT03.png");
+image = imread('C:\Users\aduttagu\Downloads\input_training_lowres\GT2.png');
+trimap = imread('C:\Users\aduttagu\Downloads\trimap_training_lowres\Trimap1\GT2.png');
+GT = imread("C:\Users\aduttagu\Downloads\gt_training_lowres\GT2.png");
 
 % Step 2
 % Plotting the Input image and trimap for analysis.
@@ -101,7 +101,7 @@ g = g / max(g(:)); %normalizing it.
 % square structuring element for eroding the unknown region(s)
 % sq is just an 3X3 square matrix of ones, which is used for image eroding
 % at borders.
-sq = strel('square', 3);
+sq = strel('sphere', 5);
 
 unreg = unkmask; %transferring data to prevent data loss and inappropiate use.
 n = 1; % while loop initial n parameter.
@@ -270,18 +270,21 @@ title('Ground Truth - Alpha Matte');
 % Calculating the SAD between the Groudn Truth and Alpha Matte's obtained
 % from Bayesian and Laplacian Matting.
 GT = GT(:, :, 1);
-diff1 = imabsdiff(alpha, GT);
-SAD_bm = sum(diff1(:), "omitnan");
-diff2 = imabsdiff(Lalpha, GT);
-SAD_lm = sum(diff2(:), "omitnan");
+SAD_bm = sad2d(alpha, GT);
+SAD_lm = sad2d(Lalpha, GT);
 
-% Step 9 : 
+% Step 9.1 : 
 % % Calculating the MSE between the Ground Truth and Alpha Matte's obtained
 % from Bayesian and Laplacian Matting.
-diff3 = (GT - alpha);
-mse_bm = mean((diff3(:).^2), "omitnan");
-diff4 = (GT - Lalpha);
-mse_lm = mean((diff4(:).^2), "omitnan");
+mse_bm = mse2d(alpha, GT);
+mse_lm = mse2d(Lalpha, GT);
+
+% Step 9.2 : 
+% % Calculating the PNSR between the Ground Truth and Alpha Matte's obtained
+% from Bayesian and Laplacian Matting.
+pnsr_bm = PNSR(alpha, GT);
+pnsr_lm = PNSR(Lalpha, GT);
+
 
 % Step 10 :
 % Compositing with a new background.
