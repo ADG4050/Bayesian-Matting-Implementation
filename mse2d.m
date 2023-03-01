@@ -7,6 +7,7 @@
 function msevalue = mse2d(alpha, GTalpha)
 
 % check size of input before calculate mse
+
 a = sizecheck(alpha, GTalpha);
 
 if a == 1

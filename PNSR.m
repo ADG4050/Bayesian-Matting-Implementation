@@ -7,11 +7,13 @@
 function pnsrvalue = PNSR(alpha, GTalpha)
 
 % check size of input before calculate sad
+
 a = sizecheck(alpha, GTalpha);
 
 if a == 1
     msevalue = mse2d(alpha, GTalpha);
     pnsrvalue = 10 * log10((255^2) / msevalue);
+
 end
 
 end 
