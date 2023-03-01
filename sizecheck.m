@@ -5,6 +5,7 @@
 
 function test = sizecheck(alpha, GTalpha)
 
+
 sz1 = size(alpha);
 sz2 = size(GTalpha);
 

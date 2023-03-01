@@ -11,6 +11,7 @@ a = sizecheck(alpha, GTalpha);
 if a == 1
     diff = abs(alpha - GTalpha);
     sadvalue = sum(diff(:), 'omitnan');
+
 end
 
 end 
