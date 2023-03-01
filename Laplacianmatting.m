@@ -30,6 +30,7 @@ function alpha = Laplacianmatting (img, trimap)
 % Load the input image and trimap
 %function [img,trimap] = laplace(img,trimap)
 % Convert the image and trimap to double precision and normalize
+
 img = im2double(img); % Raw read in uint8 image data to double data (integer to floating point)
 trimap = im2double(trimap);             
 

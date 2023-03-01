@@ -8,9 +8,9 @@ clear all;
 % Step 1 
 % Reading the input image, trimap and GT - alpha matte of that image.
 
-image = imread('C:\Users\aduttagu\Downloads\input_training_lowres\GT19.png');
-trimap = imread('C:\Users\aduttagu\Downloads\trimap_training_lowres\Trimap1\GT19.png');
-GT = imread("C:\Users\aduttagu\Downloads\gt_training_lowres\GT19.png");
+image = imread('C:\Users\aduttagu\Downloads\input_training_lowres\GT03.png');
+trimap = imread('C:\Users\aduttagu\Downloads\trimap_training_lowres\Trimap1\GT03.png');
+GT = imread("C:\Users\aduttagu\Downloads\gt_training_lowres\GT03.png");
 
 % Step 2
 % Plotting the Input image and trimap for analysis.
@@ -33,11 +33,16 @@ GT = im2double(GT);
 
 % Step 4
 % Initializing all parameters required for the complete process.
+
+% Basic Parameters
 N = 100; % Neighbourhood window size
+N_max = length(im) / 4; % Max window size (can be increased if required)
 sigma = 8; % standard deviation of the Gaussian distribution
+
 % clustering parameter
 minN = 10; % minimum weights required for clustering function activation 
 min_var = 0.05; % minimal cluster variance in order to stop splitting
+
 % optimization parameters
 cov_C = 0.01; % assumed camera covariance
 maxIter=  1000; % maximal number of iterations
@@ -53,8 +58,6 @@ bg_reg = (trimap == 0); % background
 fg_reg = (trimap == 1); % foreground 
 unkmask = (~ bg_reg & ~ fg_reg); % unknow region 
 
-
-
 % Step 5.2
 % Making three dimentional matrix (r, g, b), so that the seperate logical 
 % matrices made before are applicable for the foreground and background
@@ -63,7 +66,6 @@ F = im;
 B = im;
 FG = repmat(~fg_reg, [1, 1, 3]);
 BG = repmat(~bg_reg, [1, 1, 3]);
-
 
 % Step 5.3
 % with help of FG and BG, separating foreground and background regions from
@@ -95,7 +97,6 @@ Unknown_sum = sum(unkmask(:));
 g = fspecial('gaussian', N, sigma); 
 g = g / max(g(:)); %normalizing it.  
 
-
 % Step 5.6
 % square structuring element for eroding the unknown region(s)
 % sq is just an 3X3 square matrix of ones, which is used for image eroding
@@ -108,13 +109,21 @@ n = 1; % while loop initial n parameter.
 % Creating a counter to issue warning, once max iteration has reached and 
 % stopping the iterative loop. Condition = max iteration described below.
 m_i = 0;
-max_li = 20;
+max_li = 10;
 
 % Step 5.7
 % Creating while loop with all unknown region cells marked NaN and 
 % calculating F,B, alpha using an iterative process. 
 
 while n < Unknown_sum
+
+    % Step 5.7*
+    % As per the bayesian matting paper, guassian falloff is used for 
+    % weighting each pixel neighborhood range set earlier.
+    % This creates a gaussian filter of size N x N, that can be applied to 
+    % the image, given the image follows normal distribution. 
+    g = fspecial('gaussian', N, sigma); 
+    g = g / max(g(:)); %normalizing it.  
 
     % Step 5.7.1 certain pixels are removed from the unknown region of the
     % image to detect the edges of the image.
@@ -133,6 +142,7 @@ while n < Unknown_sum
     % Step 5.7.3 Creating a for loop inside the unknown region for
     % iterating along the count of Y that we just computed.
     for i = 1 : length(Y)
+
         % Step 5.7.3.1 taking the pixel and reshaping its 3 channel value 
         % into a 3 X 1 matrix
         x = X(i); y = Y(i);
@@ -153,8 +163,7 @@ while n < Unknown_sum
         pix_fg = reshape(pix_fg, N * N, 3);
         pix_fg = pix_fg(wghts_f > 0, :);
         wghts_f = wghts_f(wghts_f > 0);
-
-        
+       
         % Step 5.7.3.4 taking the surrounding pixel values around that 
         % pixel in background region. (Used calcsurr_alpha Function to 
         % calaculate surrounding values). Then Calculating weights of that
@@ -166,8 +175,7 @@ while n < Unknown_sum
         pix_bg = pix_bg(wghts_b > 0, :);
         wghts_b = wghts_b(wghts_b > 0);
 
-      
-
+     
         % Step 5.7.3.5 Clustering function will be done only weights of F &
         % B are more than 10 or else we go to next iteration without
         % clustering.
@@ -182,9 +190,13 @@ while n < Unknown_sum
             if (max_rep == length(Y))
                 m_i = m_i + 1;
                 if (m_i == max_li)
-                    n = Unknown_sum;
-                    disp("warning : Max iteration for applying MAP with " + ...
+                    m_i = 0;
+                    N = N + 10;
+                    if (N == N_max)
+                        n = Unknown_sum;
+                        disp("warning : Max iteration for applying MAP with " + ...
                         "the user set window has reached");
+                    end
                 end
             end
             continue;
@@ -201,8 +213,7 @@ while n < Unknown_sum
         % explained in the function. (Can be ommited if neccessary)
         cov_F = addCamVar(cov_f, cov_C);
         cov_B = addCamVar(cov_b, cov_C);
-
-                
+        
         % Step 5.7.3.7 - Calculates the initial alpha value mean of the 
         % surrounding pixels. 
         alpha_init = nanmean(pix_unr(:));
@@ -219,6 +230,7 @@ while n < Unknown_sum
 
         % Step 5.7.3.10 - removing from unkowns for the next iteration. 
         unkmask(y,x) = 0;  
+        
         n = n + 1;
     end
     
@@ -259,17 +271,30 @@ title('Ground Truth - Alpha Matte');
 % from Bayesian and Laplacian Matting.
 GT = GT(:, :, 1);
 diff1 = imabsdiff(alpha, GT);
-sumdiff1 = sum(diff1(:), "omitnan");
+SAD_bm = sum(diff1(:), "omitnan");
 diff2 = imabsdiff(Lalpha, GT);
-sumdiff2 = sum(diff2(:), "omitnan");
+SAD_lm = sum(diff2(:), "omitnan");
 
 % Step 9 : 
 % % Calculating the MSE between the Ground Truth and Alpha Matte's obtained
 % from Bayesian and Laplacian Matting.
-
 diff3 = (GT - alpha);
-mse3 = mean((diff3(:).^2), "omitnan");
-
+mse_bm = mean((diff3(:).^2), "omitnan");
 diff4 = (GT - Lalpha);
-mse4 = mean((diff4(:).^2), "omitnan");
+mse_lm = mean((diff4(:).^2), "omitnan");
+
+% Step 10 :
+% Compositing with a new background.
+back = im2double(imread('background.png'));
+
+Comp_bm = compositing (im, alpha, back);
+Comp_lm = compositing (im, Lalpha, back);
+
+figure(5);
+subplot(1, 2, 1);
+imshow(Comp_bm);
+title('Bayesian Matting - Compositing');
+subplot(1, 2, 2);
+imshow(Comp_lm);
+title('Laplacian Matting - Compositing');
 
