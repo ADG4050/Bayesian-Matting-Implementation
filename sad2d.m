@@ -7,10 +7,11 @@
 function sadvalue = sad2d(alpha, GTalpha)
 % check size of input before calculate sad
 
-a=sizecheck(alpha, GTalpha);
-if a==1
+a = sizecheck(alpha, GTalpha);
+if a == 1
     diff = abs(alpha - GTalpha);
-    sadvalue = sum(diff, 'all');
+    sadvalue = sum(diff(:), 'omitnan');
+
 end
 
 end 

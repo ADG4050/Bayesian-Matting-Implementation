@@ -7,12 +7,15 @@
 function msevalue = mse2d(alpha, GTalpha)
 
 % check size of input before calculate mse
-a=sizecheck(alpha, GTalpha);
 
-if a==1
-    diff = (alpha - GTalpha).^2;
-    msevalue = mean(diff, 'all');
+a = sizecheck(alpha, GTalpha);
+
+if a == 1
+    diff = (alpha - GTalpha);
+    msevalue = mean(diff(:).^2, 'omitnan');
 
 end
 
 end 
+
+
