@@ -26,7 +26,11 @@ def sad2d(alpha, GTalpha):
     return sadvalue
 
 
-
+def psnr2d(alpha, GTalpha):
+    msevalue = mse2d(alpha, GTalpha)
+    max_pixel = max(GTalpha)
+    pnsrvalue = 10 * math.log10((max_pixel**2) / msevalue)
+    return pnsrvalue
 
 
 
