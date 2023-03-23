@@ -8,9 +8,9 @@ clear all;
 % Step 1 
 % Reading the input image, trimap and GT - alpha matte of that image.
 
-image = imread('C:\Users\aduttagu\Downloads\input_training_lowres\GT2.png');
-trimap = imread('C:\Users\aduttagu\Downloads\trimap_training_lowres\Trimap1\GT2.png');
-GT = imread("C:\Users\aduttagu\Downloads\gt_training_lowres\GT2.png");
+image = imread('C:\Users\aduttagu\Downloads\input_training_lowres\GT22.png');
+trimap = imread('C:\Users\aduttagu\Downloads\trimap_training_lowres\Trimap1\GT22.png');
+GT = imread("C:\Users\aduttagu\Downloads\gt_training_lowres\GT22.png");
 
 % Step 2
 % Plotting the Input image and trimap for analysis.
