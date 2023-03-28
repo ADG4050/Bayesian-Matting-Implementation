@@ -54,7 +54,7 @@ trimap = trimap ./ 255;% Normalization process as the original image is 8bit.2^8
 % are judged to be foreground, the parts with a grey level less than a certain threshold 
 % (very "black") are judged to be background, and the other parts are to be confirmed. 
 % The part to be confirmed is further processed to determine whether it is the foreground or the background
-fg = trimap > 0.70;             % fg is a matrix as large as the image, 
+fg = trimap > 0.4;             % fg is a matrix as large as the image, 
                                 % with an element of 1 indicating that the point is the foreground
 bg = trimap < 0.01;             % In bg, an element of 1 means that the point is background
 unk = ~(fg | bg);               % In unk, an element of 1 means neither foreground nor background, to be confirmed
@@ -79,5 +79,4 @@ alpha(fg(:, :, 1)) = 1;
 
 % Save the output alpha matte
 imwrite(alpha, 'output_alpha.png');     % Export alpha for keying
-
 end
