@@ -1,6 +1,15 @@
 import numpy as np
 from skimage.color import rgb2gray
 from skimage.filters import laplace
+import cv2
+
+img_path = 'C:/Users/zhuy3/Desktop/Bayesian-Matting-Implementation/input.jpg'
+trimap_path = 'C:/Users/zhuy3/Desktop/Bayesian-Matting-Implementatio/trimap.png'
+
+img = cv2.imread(img_path)
+trimap = cv2.imread(trimap_path)
+
+#output = Laplacianmatting(image_path, trimap_path)
 
 def Laplacianmatting(img, trimap):
     # Convert img and trimap to double
@@ -30,3 +39,8 @@ def Laplacianmatting(img, trimap):
     alpha[fg[:,:,0]] = 1
     
     return alpha
+
+
+#result =type(img)
+
+#print(result)
