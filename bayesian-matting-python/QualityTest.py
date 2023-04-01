@@ -12,12 +12,7 @@ def mse2d(alpha, GT):
     Returns:
     float: The MSE value between the two images.
     """
-
-    imag1 = np.array(alpha) / 255
-    imag2 = np.array(GT) / 255
-    
-    diff = imag1 - imag2
-    msevalue = np.nanmean(diff**2)/(imag1.shape[0]*imag1.shape[1])
+    msevalue = np.sum(np.abs(alpha/255 - GT/255))/(alpha.shape[0]*alpha.shape[1])
   
     return msevalue
 
@@ -33,11 +28,7 @@ def sad2d(alpha, GT):
     float: The SAD value between the two images.
     """
 
-    imag1 = np.array(alpha) / 255
-    imag2 = np.array(GT) / 255
-
-    diff = np.abs(imag1 - imag2)
-    sadvalue = np.sum(diff, axis=None, where=~np.isnan(diff))
+    sadvalue = np.sum(np.abs(alpha/255 - GT/255))
 
     return sadvalue
 

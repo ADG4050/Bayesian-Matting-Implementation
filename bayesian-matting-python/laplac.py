@@ -1,14 +1,25 @@
 import numpy as np
 import cv2
 from matplotlib import pyplot as plt
+from PIL import Image, ImageOps
 
-img_path = 'C:/Users/aduttagu/Desktop/Bayesian-Matting-Implementation/input_training_lowres/GT06.png'
-trimap_path = 'C:/Users/aduttagu/Desktop/Bayesian-Matting-Implementation/trimap_training_lowres/Trimap1/GT06.png'
-
-img = cv2.imread(img_path)
-trimap = cv2.imread(trimap_path)
+#image = np.array(Image.open("C:/Users/aduttagu/Desktop/Bayesian-Matting-Implementation/input_training_lowres/GT06.png"))
+#image_trimap = np.array(ImageOps.grayscale(Image.open("C:/Users/aduttagu/Desktop/Bayesian-Matting-Implementation/trimap_training_lowres/Trimap1/GT06.png")))
 
 def Laplacianmatting(img, trimap):
+
+    '''
+    Description: This function calculates the alpha matte for an image given its trimap using Laplacian matting technique.
+
+    Input:
+    img: a numpy array representing the image.
+    trimap: a numpy array representing the trimap of the image.
+
+    Output:
+    alpha: a numpy array representing the alpha matte of the image.
+    
+    '''
+
     # Convert img and trimap to double
     img = img.astype(np.float64) / 255.0
     trimap = trimap.astype(np.float64) / 255.0
@@ -28,17 +39,17 @@ def Laplacianmatting(img, trimap):
    
     for i in range(c):
         subLaplacian = Laplacian[:,:,i]
-        alpha[unk[:,:,0]] += subLaplacian[unk[:,:,0]]**2
+        alpha[unk[:,:]] += subLaplacian[unk[:,:]]**2
    
     alpha = 1 - np.sqrt(alpha/c)
-    alpha[bg[:,:,0]] = 0
-    alpha[fg[:,:,0]] = 1
+    alpha[bg[:,:]] = 0
+    alpha[fg[:,:]] = 1
    
     return alpha
 
-alpha = Laplacianmatting(img, trimap)
-plt.imshow(alpha, cmap='gray')
-plt.show()
+#alpha = Laplacianmatting(image, image_trimap)
+#plt.imshow(alpha, cmap='gray')
+#plt.show()
 
 
 

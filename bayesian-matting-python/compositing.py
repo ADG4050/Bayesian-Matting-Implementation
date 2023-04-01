@@ -1,41 +1,50 @@
 import cv2
 from matplotlib import pyplot as plt
 import numpy as np
+from PIL import Image, ImageOps
 
 
-img_path = 'C:/Users/aduttagu/Desktop/Bayesian-Matting-Implementation/input_training_lowres/GT01.png'
-alpha_path ='C:/Users/aduttagu/Desktop/Bayesian-Matting-Implementation/trimap_training_lowres/Trimap1/GT01.png'
-background_path = 'C:/Users/aduttagu/Desktop/Bayesian-Matting-Implementation/background.png'
+#image = np.array(Image.open("C:/Users/aduttagu/Desktop/Bayesian-Matting-Implementation/input_training_lowres/GT06.png"))
+#image_trimap = np.array(ImageOps.grayscale(Image.open("C:/Users/aduttagu/Desktop/Bayesian-Matting-Implementation/trimap_training_lowres/Trimap1/GT06.png")))
+#background = np.array(Image.open('C:/Users/aduttagu/Desktop/Bayesian-Matting-Implementation/background.png'))
 
-
-
-img = cv2.imread(img_path)
-alpha = cv2.imread(alpha_path)[:,:,0]
-background = cv2.imread(background_path)
 
 def compositing(img, alpha, background): 
 
+    '''
+    Args:
+    img (numpy.ndarray): A 3D numpy array representing the foreground image with dimensions (height, width, channels).
+    alpha (numpy.ndarray): A 2D numpy array representing the alpha matte with dimensions (height, width).
+    background (numpy.ndarray): A 3D numpy array representing the background image with dimensions (height, width, channels).
+
+    Returns:
+    numpy.ndarray: A 3D numpy array representing the composited image with dimensions (height, width, channels).
+    '''
+
+    H = alpha.shape[0]
+    W = alpha.shape[1]
+
+    # Resizing the background image to the size of the alpha channel
+    background = cv2.resize(background, (W, H))
+
+    # Converting the images to float
     img = img / 255
     alpha = alpha / 255
     background = background / 255
 
+    # Reshaping the alpha channel to the size of the foreground image
+    alpha = alpha.reshape((H, W, 1))
+    alpha = np.broadcast_to(alpha, (H, W, 3))
 
-    resized_back = cv2.resize(background, None, fx=(img.shape[1]/background.shape[1]), fy=(img.shape[0]/background.shape[0]), interpolation=cv2.INTER_AREA)
-
-    Sh1 = alpha.shape[0]
-    Sh2 = alpha.shape[1]
-
-    alpha = alpha.reshape((Sh1, Sh2, 1))
-    alpha = np.broadcast_to(alpha, (Sh1, Sh2, 3))
-
-    comp = img * (alpha) + resized_back * (1 - alpha)
+    # Compositing the foreground and background images
+    comp = img * (alpha) + background * (1 - alpha)
 
     return comp
 
 
-comp = compositing(img,alpha,background)
-plt.imshow(comp)
-plt.show()
+#comp = compositing(image, image_trimap,background)
+#plt.imshow(comp)
+#plt.show()
 
 
 
