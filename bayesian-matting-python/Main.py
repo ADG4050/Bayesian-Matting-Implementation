@@ -12,6 +12,7 @@ from compositing import compositing
 from QualityTest import mse2d
 from QualityTest import sad2d
 from QualityTest import psnr2d
+from smooth import smooth
 
 # Step 1 : Read image, GT and trimap.
 image = np.array(Image.open("C:/Users/aduttagu/Desktop/Bayesian-Matting-Implementation/input_training_lowres/GT06.png"))
@@ -46,7 +47,15 @@ plt.imshow(comp_Bay)
 plt.show()
 
 # Step 7 : Smoothening ALpha Methods
+smooth_alpha = smooth(alpha_disp)
 
+plt.imshow(smooth_alpha)
+plt.show()
+# fig, axes2 = plt.subplots(nrows = 1, ncols = 2)
+# axes[0].imshow(alpha_disp, cmap = 'gray')
+# axes[0].set_title('original Alpha Matte')
+# axes[1].imshow(smooth_alpha, cmap = 'gray')
+# axes[1].set_title('Eroded - Smoothed')
 
 
 # Part of Unit test - 1 : Performance Comparision between Laplacian and Bayesian. 
