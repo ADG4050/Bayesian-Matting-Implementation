@@ -8,7 +8,7 @@ def smooth(alpha_matte):
     bg = alpha_matte < 120
 
     unkreg = fg
-    kernel = np.ones((4,4))
+    kernel = np.ones((2,2))
     unkreg2 = cv2.erode(unkreg.astype(np.uint8), kernel, iterations=1)
     border_pixels = np.logical_and(np.logical_not(unkreg2), unkreg)
 

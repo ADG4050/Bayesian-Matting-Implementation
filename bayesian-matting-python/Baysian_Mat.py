@@ -183,7 +183,7 @@ def solve(mu_F, Sigma_F, mu_B, Sigma_B, C, Sigma_C, alpha_init, maxIter=50, minL
     return F_Max, B_Max, alpha_Max
 
 
-def Bayesian_Matte(img, trimap, N = 75, MaxN = 125, sigma = 8, minN = 10):
+def Bayesian_Matte(img, trimap, N = 75, MaxN = 405, sigma = 8, minN = 10):
     '''
     Input:
     img: a numpy array representing the input image with dimensions (height, width, channels)
@@ -303,10 +303,11 @@ def Bayesian_Matte(img, trimap, N = 75, MaxN = 125, sigma = 8, minN = 10):
         if sum(remain_n[:, 2]) == last_n:
             N = N + 10
             if (N == MaxN):
-                sum(remain_n[:, 2]) == n_unknown   
+                n_unknown = sum(remain_n[:, 2])   
             
             gaussian_wght = matlab_style_gauss2d((N, N), sigma)
             gaussian_wght /= np.max(gaussian_wght)
             print(N)
 
     return Al_pha, n_unknown
+

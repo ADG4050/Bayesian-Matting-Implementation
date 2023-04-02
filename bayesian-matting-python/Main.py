@@ -6,6 +6,7 @@ import cv2
 import matplotlib.pyplot as plt
 from Baysian_Mat import Bayesian_Matte
 from PIL import Image, ImageOps
+import unittest
 
 from laplac import Laplacianmatting
 from compositing import compositing
@@ -14,10 +15,12 @@ from QualityTest import sad2d
 from QualityTest import psnr2d
 from smooth import smooth
 
+
 # Step 1 : Read image, GT and trimap.
 image = np.array(Image.open("C:/Users/aduttagu/Desktop/Bayesian-Matting-Implementation/input_training_lowres/GT06.png"))
 image_trimap = np.array(ImageOps.grayscale(Image.open("C:/Users/aduttagu/Desktop/Bayesian-Matting-Implementation/trimap_training_lowres/Trimap1/GT06.png")))
 GT = np.array(ImageOps.grayscale(Image.open("C:/Users/aduttagu/Desktop/Bayesian-Matting-Implementation/gt_training_lowres/GT06.png")))
+
 
 # Step 2 : Calculating Bayesian Matte for the given trimap
 alpha,pixel_count = Bayesian_Matte(image,image_trimap) 
@@ -26,39 +29,33 @@ alpha,pixel_count = Bayesian_Matte(image,image_trimap)
 alpha_disp = alpha * 255
 alpha_int8 = np.array(alpha,dtype = int)
 
-# Step 4 : Unit Test - 1 : Calculating the Laplacian Matting
+# Step 4 : End to End testing - 1 : Calculating the Laplacian Matting
 Lalpha = Laplacianmatting(image, image_trimap)
 
-# Step 5 : Displaying THe Bayesian, Laplacian and GT.
-fig, axes = plt.subplots(nrows = 1, ncols = 3)
-axes[0].imshow(alpha_disp, cmap='gray')
-axes[0].set_title('Bayesian - Alpha Matte')
-axes[1].imshow(Lalpha, cmap='gray')
-axes[1].set_title('Laplacian - Alpha Matte')
-axes[2].imshow(GT, cmap='gray')
-axes[2].set_title('Ground Truth')
+# Step 5 : Smoothening ALpha Methods
+smooth_alpha = smooth(alpha_disp)
+
+# Step 6 : Displaying THe Bayesian, Laplacian and GT.
+fig, axes = plt.subplots(nrows = 2, ncols = 2)
+axes[0,0].imshow(alpha_disp, cmap='gray')
+axes[0,0].set_title('Bayesian - Alpha Matte')
+axes[0,1].imshow(Lalpha, cmap='gray')
+axes[0,1].set_title('Laplacian - Alpha Matte')
+axes[1,0].imshow(GT, cmap='gray')
+axes[1,0].set_title('Ground Truth')
+axes[1,1].imshow(smooth_alpha, cmap='gray')
+axes[1,1].set_title('Smoothed Alpha')
 plt.show()
 
-# Step 6 : Compositing Function Display
+# Step 7 : Compositing Function Display
 background = np.array(Image.open('C:/Users/aduttagu/Desktop/Bayesian-Matting-Implementation/background.png'))
 comp_Bay = compositing(image, alpha_disp, background)
 
 plt.imshow(comp_Bay)
 plt.show()
 
-# Step 7 : Smoothening ALpha Methods
-smooth_alpha = smooth(alpha_disp)
 
-plt.imshow(smooth_alpha)
-plt.show()
-# fig, axes2 = plt.subplots(nrows = 1, ncols = 2)
-# axes[0].imshow(alpha_disp, cmap = 'gray')
-# axes[0].set_title('original Alpha Matte')
-# axes[1].imshow(smooth_alpha, cmap = 'gray')
-# axes[1].set_title('Eroded - Smoothed')
-
-
-# Part of Unit test - 1 : Performance Comparision between Laplacian and Bayesian. 
+# Part of End to End testing - 1 : Performance Comparision between Laplacian and Bayesian. 
 Bay_MSE = mse2d(alpha_disp, GT)
 Lap_MSE = mse2d(Lalpha, GT)
 print("The MSE between the Ground Truth and Bayesian Alpha Matte is :", Bay_MSE)
@@ -73,4 +70,5 @@ Bay_PSNR = psnr2d(alpha_disp, GT)
 Lap_PSNR = psnr2d(Lalpha, GT)
 print("The PSNR between the Ground Truth and Bayesian Alpha Matte is :", Bay_PSNR)
 print("The PSNR between the Ground Truth and Laplacian Alpha Matte is :", Lap_PSNR)
+
 
