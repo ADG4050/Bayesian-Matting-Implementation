@@ -6,7 +6,8 @@ import cv2
 import matplotlib.pyplot as plt
 from Baysian_Mat import Bayesian_Matte
 from PIL import Image, ImageOps
-import unittest
+import time  # Execution TIme imports
+import psutil
 
 from laplac import Laplacianmatting
 from compositing import compositing
@@ -16,11 +17,17 @@ from QualityTest import psnr2d
 from smooth import smooth
 
 
-# Step 1 : Read image, GT and trimap.
-image = np.array(Image.open("C:/Users/aduttagu/Desktop/Bayesian-Matting-Implementation/input_training_lowres/GT10.png"))
-image_trimap = np.array(ImageOps.grayscale(Image.open("C:/Users/aduttagu/Desktop/Bayesian-Matting-Implementation/trimap_training_lowres/Trimap1/GT10.png")))
-GT = np.array(ImageOps.grayscale(Image.open("C:/Users/aduttagu/Desktop/Bayesian-Matting-Implementation/gt_training_lowres/GT10.png")))
+# get current memory usage
+Memstart = psutil.Process().memory_info().rss / (1024**2)
 
+
+# Step 1 : Read image, GT and trimap.
+image = np.array(Image.open("C:/Users/aduttagu/Desktop/Bayesian-Matting-Implementation/input_training_highres/GT10.png"))
+image_trimap = np.array(ImageOps.grayscale(Image.open("C:/Users/aduttagu/Desktop/Bayesian-Matting-Implementation/trimap_training_highres/Trimap1/GT10.png")))
+GT = np.array(ImageOps.grayscale(Image.open("C:/Users/aduttagu/Desktop/Bayesian-Matting-Implementation/gt_training_highres/GT10.png")))
+
+# Start time for computing the execution time
+st = time.time()
 
 # Step 2 : Calculating Bayesian Matte for the given trimap
 alpha,pixel_count = Bayesian_Matte(image,image_trimap) 
@@ -29,13 +36,21 @@ alpha,pixel_count = Bayesian_Matte(image,image_trimap)
 alpha_disp = alpha * 255
 alpha_int8 = np.array(alpha,dtype = int)
 
+et = time.time()
+elapsed_time = et - st
+
+
 # Step 4 : End to End testing - 1 : Calculating the Laplacian Matting
 Lalpha = Laplacianmatting(image, image_trimap)
 
-# Step 5 : Smoothening ALpha Methods
+# Step 5 : Compositing Function Display
+background = np.array(Image.open('C:/Users/aduttagu/Desktop/Bayesian-Matting-Implementation/background.png'))
+comp_Bay = compositing(image, alpha_disp, background)
+
+# Step 6 : Smoothening ALpha Methods
 smooth_alpha = smooth(alpha_disp)
 
-# Step 6 : Displaying THe Bayesian, Laplacian and GT.
+# Step 7 : Displaying THe Bayesian, Laplacian and GT.
 fig, axes = plt.subplots(nrows = 2, ncols = 2)
 axes[0,0].imshow(alpha_disp, cmap='gray')
 axes[0,0].set_title('Bayesian - Alpha Matte')
@@ -47,9 +62,7 @@ axes[1,1].imshow(smooth_alpha, cmap='gray')
 axes[1,1].set_title('Smoothed Alpha')
 plt.show()
 
-# Step 7 : Compositing Function Display
-background = np.array(Image.open('C:/Users/aduttagu/Desktop/Bayesian-Matting-Implementation/background.png'))
-comp_Bay = compositing(image, alpha_disp, background)
+
 
 plt.imshow(comp_Bay)
 plt.show()
@@ -70,5 +83,14 @@ Bay_PSNR = psnr2d(alpha_disp, GT)
 Lap_PSNR = psnr2d(Lalpha, GT)
 print("The PSNR between the Ground Truth and Bayesian Alpha Matte is :", Bay_PSNR)
 print("The PSNR between the Ground Truth and Laplacian Alpha Matte is :", Lap_PSNR)
+
+
+print('Execution time for Bayesian Matting: {:.3f} seconds'.format(elapsed_time))
+
+# get usage after completion of code
+Memend = psutil.Process().memory_info().rss / (1024**2)
+Memuse = Memend - Memstart
+print("Total memory consumed in execution of this program : ", Memuse, "MB's")
+
 
 

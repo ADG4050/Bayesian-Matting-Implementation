@@ -76,7 +76,7 @@ def get_window(m, x, y, N = 75):
     # Return the window
     return r
 
-
+#@jit(nopython=True, cache=True)
 def solve(mu_F, Sigma_F, mu_B, Sigma_B, C, Sigma_C, alpha_init, maxIter=50, minLike=1e-6):
     '''
     Estimates the foreground (F), background (B), and alpha values for a given input image Chan using a Gaussian mixture model.
@@ -257,8 +257,7 @@ def Bayesian_Matte(img, trimap, N = 75, MaxN = 405, sigma = 8, minN = 10):
                 y, x = map(int, remain_n[i, :2])
 
                 # taking the surrounding pixel values around that pixel. (Used get_window Function to calaculate surrounding values)
-                a_window = get_window(
-                Al_pha[:, :, np.newaxis], x, y, N)[:, :, 0]
+                a_window = get_window(Al_pha[:, :, np.newaxis], x, y, N)[:, :, 0]
 
                 # Taking the surrounding pixel values around that pixel in foreground region. (Used get_window Function to calaculate surrounding values). 
                 # Then Calculating weights of that pixel = unknown pixel matrix squared X gausian matrix and then is structured as required.
@@ -300,6 +299,8 @@ def Bayesian_Matte(img, trimap, N = 75, MaxN = 405, sigma = 8, minN = 10):
                     print("Successfully Calculated : {} out of unknown Pixels : {}.".format(
                         np.sum(remain_n[:, 2]), len(remain_n)))
 
+
+        # The remaining pixel values which are unsolved are passed again with increasing window size with a Max window limit given.
         if sum(remain_n[:, 2]) == last_n:
             N = N + 10
             if (N == MaxN):

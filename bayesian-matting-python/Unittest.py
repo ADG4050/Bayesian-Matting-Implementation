@@ -40,7 +40,7 @@ class testcode(unittest.TestCase):
         self.assertEqual(Image1, Image2, "The shapes of the input image and composite are not equal")
 
 
-    """ Unit test - 3 : Checks Input image and Alpha size"""
+    """ Unit test - 3 : Checks Input image and Alpha height and width"""
     def test_image_size(self):
         # Get the shapes of input image and alpha
         h1,w1,c1 = image.shape

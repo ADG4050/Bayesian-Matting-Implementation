@@ -13,9 +13,9 @@ def mse2d(alpha, GT):
     float: The MSE value between the two images.
     """
     if np.isnan(np.max(alpha)):
-        msevalue = np.nansum(np.abs(alpha/255 - GT/255))/(alpha.shape[0]*alpha.shape[1])
+        msevalue = np.nansum(np.abs(alpha - GT)**2)/(alpha.shape[0]*alpha.shape[1])
     else:
-        msevalue = np.sum(np.abs(alpha/255 - GT/255))/(alpha.shape[0]*alpha.shape[1])
+        msevalue = np.sum(np.abs(alpha - GT)**2)/(alpha.shape[0]*alpha.shape[1])
     
     return msevalue
 
@@ -31,9 +31,11 @@ def sad2d(alpha, GT):
     float: The SAD value between the two images.
     """
     if np.isnan(np.max(alpha)):
-        sadvalue = np.nansum(np.abs(alpha/255 - GT/255))
+        sadvalue = np.nansum(np.abs(alpha - GT))
     else:
-        sadvalue = np.sum(np.abs(alpha/255 - GT/255))
+        sadvalue = np.sum(np.abs(alpha - GT))
+
+    
 
     return sadvalue
 

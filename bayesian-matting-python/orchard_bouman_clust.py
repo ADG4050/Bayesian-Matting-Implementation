@@ -1,9 +1,6 @@
 import numpy as np
 
-# Implementation of orchard bouman clustering
-# Not the cleanest code
-# Might be faster if rewritten in all numpy, node object -> array
-# May be able to be spedup with numba. 
+# Implementation of orchard bouman clustering in 1991 by Orchard and Bouman
 
 class Node(object):
 
