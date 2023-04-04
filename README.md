@@ -20,7 +20,7 @@ A glimpse of how the output of the program looks, then sail through
 ---
 ## High-level Description of the project
 
-The code implemented here represents the bayesian method of image matting, as first explained in the paper, "A Bayesian Approach to Digital Matting" by Yung-Yu Chuang et all. The math and logic behind the main alogorithm is explained briefly in the project plan presentation [open presentation](Group2_week4_presentation.pdf)
+The code implemented here represents the bayesian method of image matting, as first explained in the paper, "A Bayesian Approach to Digital Matting" by Yung-Yu Chuang et all. The math and logic behind the main alogorithm is explained briefly in the project plan presentation [open presentation](https://github.com/ADG4050/Bayesian-Matting-Implementation/blob/main/Group2_week4_presentation%20.pdf)
 
 The main code is based on initial code implemented by Michael Rubinistein, (check Credits section), on which further implementation is done to develop a revised algorithm, answering the shortcommings to Michael Rubinstein's code to the Alphamatting.com GT Dataset. Severe testing is performed on this algorithm to confirm its creditibility. 
 
