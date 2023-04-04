@@ -88,20 +88,19 @@ Five unittests are used in this Bayesian matting project to check the functional
 
 Three e2e tests are used in this Bayesian matting project to check the complete functionality of the algorithm.
 1) Alpha matte comparsion between Bayesian matting and Laplacian matting : A comparision is made between the bayesian and the laplacian alpha matte's. The Laplacian matte is done using the inbuilt cv2 laplacian function. Bayesian being the probabilistic method, a higher matte performance is expected. MSE, PSNR and SAD with image base being (0-255), is used to prove that bayesian is better. A table showing the PSNR, SAD and MSE and grpah below confirms the results obtained. 
-<img src="table1.JPG" width="700">
-<img src="graph1.jpeg" width="500">
+<img src="table1.JPG" width="750">
 
 
 2. Performance evaluation.
 
 i) low resolution trimap 1 vs trimap 2 : Here the test is performed with different Trimaps for the same image, with Trimap 2 having more unknown regions compared to Trimap 1. The PSNR, SAD and MSE is comapred along with time taken and memeory consumed throughout. A graph and table is shown below showing the results. 
 
-<img src="table2.JPG" width="700">
-<img src="graph2.jpeg" width="500">
+<img src="table2.JPG" width="750">
+<img src="graph2.jpeg" width="600">
 
 ii) High resolution trimap vs low resolution trimap : For same images, trimap with higher resolution is comapred, having almost 6X more unknown points and results are tabled and plotted.  
 
-<img src="graph1.jpeg" width="500">
+<img src="graph1.jpeg" width="600">
 
 iii) Hidden Ground truth images (Stress images) : These tests are performed on  images where foreground and background are similar, difficult to differentiate. Since no ground truth is available, the images are observed visually. The Matte works perfectly for normal textures, but fails for hair like structures.
 
@@ -111,7 +110,7 @@ iii) Hidden Ground truth images (Stress images) : These tests are performed on  
 3. Comparing the two histograms between input image and composited image :
 Initially the plan was to visually compare the similarity between the histograms of the input image and the composite image, with both having same foreground, a similar histogram is expected. However, with background having the similar color distribution with the foreground, this test dos'nt work that well. Hence, using a monochrome we make this work. Below are the test result for a black and white background image and a GT image. 
 
-<img src="IMG_9091.jpg" width="75" height="150"><img src="IMG_9093.jpg" width="75" height="150"><img src="Figure_1.png" width="400">
+<img src="IMG_9091.jpg" width="100" height="150"><img src="IMG_9093.jpg" width="100" height="150"><img src="Figure_1.png" width="450">
 
 <img src="inpcomp.png" width="250"><img src="hist_1.png" width="200"><img src="hist_2.png" width="200">
 
