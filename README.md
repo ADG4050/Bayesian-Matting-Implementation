@@ -4,6 +4,10 @@ Author - Group : Yin Yang Artistic Chaos (Yuning, Abhishek, Chai Jie)
 
 The following project implements Bayesian Matting, stress tests its algorithms in forms of various unit and end to end tests and checks for novel solutions of improvement. The Main implementation is done in Python, however the main algorithm and performance metric functions have also been implemented in MATLAB. Please refer specific folders for MATLAB and Python code. The following project is part of 5c22 Computational Method course, taught as a part of Msc course in Trinity College Dublin.
 
+A glimpse of how the output of the program looks, then sail through
+
+<img src="Figure_2.png" width="650">
+
 ---
 
 ## Table of Contents
