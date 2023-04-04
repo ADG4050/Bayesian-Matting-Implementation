@@ -111,19 +111,15 @@ iii) Hidden Ground truth images (Stress images) : These tests are performed on  
 3. Comparing the two histograms between input image and composited image :
 Initially the plan was to visually compare the similarity between the histograms of the input image and the composite image, with both having same foreground, a similar histogram is expected. However, with background having the similar color distribution with the foreground, this test dos'nt work that well. Hence, using a monochrome we make this work. Below are the test result for a black and white background image and a GT image. 
 
-<img src="Figure_1.png" width="200">
-<img src="IMG_9091.jpg" width="200">
-<img src="IMG_9093.jpg" width="200">
-<img src="inpcomp.png" width="200">
-<img src="hist_1.png" width="200">
-<img src="hist_2.png" width="200">
+<img src="Figure_1.png" width="200"><img src="IMG_9091.jpg" width="200"><img src="IMG_9093.jpg" width="200">
+<img src="inpcomp.png" width="200"><img src="hist_1.png" width="200"><img src="hist_2.png" width="200">
 
 ---
 ## Extras
 
 1) Smoothening Filter : A smoothening filter was used for novelty purpose, which reoves blurs across the foreground border areas. This works well for rounded shaped foreground images, but works very badly for images which has hair and fuzzy interferences. Below are images where the filter worked and didnt worked is displayed.
 
-<img src="smooth.png" width="600">
+<img src="smooth.png" width="650">
 
 2) Time Complexity and Memory Usage : Time taken to compute the matte and memory consumed for different trimaps are tabled above. The trend observed is with increase of unknown region, the time complexity increases, but for memory it depends on the cache value also.
 
@@ -132,7 +128,7 @@ Initially the plan was to visually compare the similarity between the histograms
 
 4) MATALB vs Python Time & Quality Comparision : A Matlab vs Python Quality check with time taken was performed to check the better result, working in same specifications. We observe better Matte in MATLAB for GT-04 Image which has hair and better matte for GT-01 in python which has more textures. Time taken is almost similar for both. 
 
-<img src="MATvsPY.png" width="600">
+<img src="MATvsPY.png" width="650">
 
 ---
 ## Credits
