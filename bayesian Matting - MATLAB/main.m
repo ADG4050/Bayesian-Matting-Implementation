@@ -8,9 +8,9 @@ clear all;
 % Step 1 
 % Reading the input image, trimap and GT - alpha matte of that image.
 
-image = imread('C:\Users\aduttagu\Desktop\Main\Image Dataset\input_training_lowres\GT04.png');
-trimap = imread('C:\Users\aduttagu\Desktop\Main\Image Dataset\trimap_training_lowres\Trimap1\GT04.png');
-GT = imread("C:\Users\aduttagu\Desktop\Main\Image Dataset\gt_training_lowres\GT04.png");
+image = imread('C:\Users\aduttagu\Desktop\Main\Bayesian-Matting-Implementation\Image Dataset\input_training_lowres\GT04.png');
+trimap = imread('C:\Users\aduttagu\Desktop\Main\Bayesian-Matting-Implementation\Image Dataset\trimap_training_lowres\Trimap1\GT04.png');
+GT = imread("C:\Users\aduttagu\Desktop\Main\Bayesian-Matting-Implementation\Image Dataset\gt_training_lowres\GT04.png");
 
 % Step 2
 % Plotting the Input image and trimap for analysis.
