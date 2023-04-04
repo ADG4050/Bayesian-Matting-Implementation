@@ -71,9 +71,17 @@ The graph shows that alpha matte from Bayesian matting has less MSE(Mean Square 
 
 
 2. Performance evaluation.
+i) Lower size trimap images: Trimap1 hase less unknown region, and trimap2 has more unknown region.
+ii) Higher size trimap images
 
 
 3. Comparing the two histograms between input image and composited image.
+Initially our plan was to compare the similarity between the histograms of the input image and the synthesized image. But we forget that the histogram is a sufficient and non-essential condition for the matting result. Therefore, it cannot be explained from the histogram that the result of the matting is correct.
+
+There are two reasons:
+
+i) A histogram of any color space has no positional information. This means that it is entirely possible for two different pictures to have the same histogram.
+ii) Unless we use a monochrome image for the background composite, we see a peak and foreground distribution. When the background changes, the peaks move, but the foreground distribution is almost unchanged. But this is not what we want, we want to use a more complex arbitrary background image in the composition. At this time, we cannot accurately distinguish the foreground and background.
 
 ---
 ## Credits
