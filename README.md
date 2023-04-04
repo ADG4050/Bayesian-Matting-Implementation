@@ -88,7 +88,7 @@ Five unittests are used in this Bayesian matting project to check the functional
 
 Three e2e tests are used in this Bayesian matting project to check the complete functionality of the algorithm.
 1) Alpha matte comparsion between Bayesian matting and Laplacian matting : A comparision is made between the bayesian and the laplacian alpha matte's. The Laplacian matte is done using the inbuilt cv2 laplacian function. Bayesian being the probabilistic method, a higher matte performance is expected. MSE, PSNR and SAD with image base being (0-255), is used to prove that bayesian is better. A table showing the PSNR, SAD and MSE and grpah below confirms the results obtained. 
-<img src="table1.JPG" width="500">
+<img src="table1.JPG" width="700">
 <img src="graph1.jpeg" width="500">
 
 
@@ -96,7 +96,7 @@ Three e2e tests are used in this Bayesian matting project to check the complete 
 
 i) low resolution trimap 1 vs trimap 2 : Here the test is performed with different Trimaps for the same image, with Trimap 2 having more unknown regions compared to Trimap 1. The PSNR, SAD and MSE is comapred along with time taken and memeory consumed throughout. A graph and table is shown below showing the results. 
 
-<img src="table1.JPG" width="500">
+<img src="table2.JPG" width="700">
 <img src="graph2.jpeg" width="500">
 
 ii) High resolution trimap vs low resolution trimap : For same images, trimap with higher resolution is comapred, having almost 6X more unknown points and results are tabled and plotted.  
@@ -113,14 +113,14 @@ Initially the plan was to visually compare the similarity between the histograms
 
 <img src="IMG_9091.jpg" width="75" height="150"><img src="IMG_9093.jpg" width="75" height="150"><img src="Figure_1.png" width="400">
 
-<img src="inpcomp.png" width="300"><img src="hist_1.png" width="250"><img src="hist_2.png" width="250">
+<img src="inpcomp.png" width="250"><img src="hist_1.png" width="200"><img src="hist_2.png" width="200">
 
 ---
 ## Extras
 
 1) Smoothening Filter : A smoothening filter was used for novelty purpose, which reoves blurs across the foreground border areas. This works well for rounded shaped foreground images, but works very badly for images which has hair and fuzzy interferences. Below are images where the filter worked and didnt worked is displayed.
 
-<img src="smooth.png" width="650">
+<img src="smooth.png" width="500">
 
 2) Time Complexity and Memory Usage : Time taken to compute the matte and memory consumed for different trimaps are tabled above. The trend observed is with increase of unknown region, the time complexity increases, but for memory it depends on the cache value also.
 
