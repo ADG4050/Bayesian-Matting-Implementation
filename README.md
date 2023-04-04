@@ -111,8 +111,9 @@ iii) Hidden Ground truth images (Stress images) : These tests are performed on  
 3. Comparing the two histograms between input image and composited image :
 Initially the plan was to visually compare the similarity between the histograms of the input image and the composite image, with both having same foreground, a similar histogram is expected. However, with background having the similar color distribution with the foreground, this test dos'nt work that well. Hence, using a monochrome we make this work. Below are the test result for a black and white background image and a GT image. 
 
-<img src="Figure_1.png" width="200"><img src="IMG_9091.jpg" width="200"><img src="IMG_9093.jpg" width="200">
-<img src="inpcomp.png" width="200"><img src="hist_1.png" width="200"><img src="hist_2.png" width="200">
+<img src="Figure_1.png" width="400"><img src="IMG_9091.jpg" width="100" height="200"><img src="IMG_9093.jpg" width="100" height="200">
+
+<img src="inpcomp.png" width="200"><img src="hist_1.png" width="250"><img src="hist_2.png" width="250">
 
 ---
 ## Extras
