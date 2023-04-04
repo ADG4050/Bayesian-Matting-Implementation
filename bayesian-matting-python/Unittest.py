@@ -5,7 +5,7 @@ from Baysian_Mat import Bayesian_Matte
 import numpy as np
 from compositing import compositing
 from numpy.testing import assert_array_equal
-from Baysian_Mat import get_window
+from Baysian_Mat import calcsurr_alpha
 from orchard_bouman_clust import clustFunc
 
 
@@ -57,7 +57,7 @@ class testcode(unittest.TestCase):
     shape of the output of the function with the expected shape. '''
     def test_get_window(self):
         m = np.random.rand(100, 100, 3)
-        window = get_window(m, 25, 25, 75)
+        window = calcsurr_alpha(m, 25, 25, 75)
         window_shape = window.shape
         expected_shape = (75, 75, 3)
         assert_array_equal(window_shape, expected_shape)

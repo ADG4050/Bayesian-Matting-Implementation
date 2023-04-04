@@ -42,7 +42,7 @@ def matlab_style_gauss2d(shape=(3, 3), sigma=0.5):
     return h
 
 
-def get_window(m, x, y, N = 75):
+def calcsurr_alpha(m, x, y, N = 75):
     '''
     Input:
     m: a numpy array of shape (h, w, c) representing an image.
@@ -77,7 +77,7 @@ def get_window(m, x, y, N = 75):
     return r
 
 #@jit(nopython=True, cache=True)
-def solve(mu_F, Sigma_F, mu_B, Sigma_B, C, Sigma_C, alpha_init, maxIter=50, minLike=1e-6):
+def eqntn(mu_F, Sigma_F, mu_B, Sigma_B, C, Sigma_C, alpha_init, maxIter=50, minLike=1e-6):
     '''
     Estimates the foreground (F), background (B), and alpha values for a given input image Chan using a Gaussian mixture model.
 
@@ -257,11 +257,11 @@ def Bayesian_Matte(img, trimap, N = 75, MaxN = 405, sigma = 8, minN = 10):
                 y, x = map(int, remain_n[i, :2])
 
                 # taking the surrounding pixel values around that pixel. (Used get_window Function to calaculate surrounding values)
-                a_window = get_window(Al_pha[:, :, np.newaxis], x, y, N)[:, :, 0]
+                a_window = calcsurr_alpha(Al_pha[:, :, np.newaxis], x, y, N)[:, :, 0]
 
                 # Taking the surrounding pixel values around that pixel in foreground region. (Used get_window Function to calaculate surrounding values). 
                 # Then Calculating weights of that pixel = unknown pixel matrix squared X gausian matrix and then is structured as required.
-                fg_window = get_window(FG_A, x, y, N)
+                fg_window = calcsurr_alpha(FG_A, x, y, N)
                 fg_weights = np.reshape(a_window**2 * gaussian_wght, -1)
                 values_to_keep = np.nan_to_num(fg_weights) > 0
                 fg_pixels = np.reshape(fg_window, (-1, 3))[values_to_keep, :]
@@ -269,7 +269,7 @@ def Bayesian_Matte(img, trimap, N = 75, MaxN = 405, sigma = 8, minN = 10):
 
                 # taking the surrounding pixel values around that pixel in background region. (Used calcsurr_alpha Function to calaculate surrounding values. 
                 # Then Calculating weights of that pixel = (1 - unknown pixel matrix) squared X gausian matrix and then is structured as required.
-                bg_window = get_window(BG_A, x, y, N)
+                bg_window = calcsurr_alpha(BG_A, x, y, N)
                 bg_weights = np.reshape((1-a_window)**2 * gaussian_wght, -1)
                 values_to_keep = np.nan_to_num(bg_weights) > 0
                 bg_pixels = np.reshape(bg_window, (-1, 3))[values_to_keep, :]
@@ -286,7 +286,7 @@ def Bayesian_Matte(img, trimap, N = 75, MaxN = 405, sigma = 8, minN = 10):
                 alpha_init = np.nanmean(a_window.ravel())
 
                 # We try to solve our 3 equation 7 variable problem with minimum likelihood estimation
-                fg_pred, bg_pred, alpha_pred = solve(
+                fg_pred, bg_pred, alpha_pred = eqntn(
                     mean_fg, cov_fg, mean_bg, cov_bg, img[y, x], 0.7, alpha_init)
 
                 # Assigning the F, B and alpha values, Removing from unkowns for the next iteration.
