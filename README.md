@@ -73,7 +73,13 @@ python Unittest.py
 
 <img src="Matlab demo.JPG" width="400">
 
+6) A UI.py is also available wherein a UI is used to select the images, trimap and GT for better user experience, with same results.
+```sh
+python UI.py
+```
+<img src="GUI.JPG" width="400">
 ---
+
 ## Methodology and Results
 
 Here we mainly discuss the unit tests and End to end tests used for testing out algorithm and final code.
@@ -112,6 +118,12 @@ iii) Hidden Ground truth images (Stress images) : These tests are performed on  
 <img src="ght2.png" width="450">
 
 To have an overall summary, the the alogorithm works very well for low resolution dataset, with low execution time but for high resolution it takes a lot of time. For, the hidden ground truth set, the results depends on the texture of the foreground of the image, it doesnt work well for too much hairy or fuzzy images.  
+
+iv) Window size selection : An optimal test is performed to select the best N, however a range winthin 55 - 125, is optimal keeping mse and execution time in mind, as by unncessary increasing window size, might lead to more computations.
+The graph below shows the performance window size vs PSNR. 
+
+<img src="NvsPSNR.png" width="450">
+
 
 3. Comparing the two histograms between input image and composited image :
 Initially the plan was to visually compare the similarity between the histograms of the input image and the composite image, with both having same foreground, a similar histogram is expected. However, with background having the similar color distribution with the foreground, this test dos'nt work that well. Hence, using a monochrome we make this work. Below are the test result for a black and white background image and a GT image. 

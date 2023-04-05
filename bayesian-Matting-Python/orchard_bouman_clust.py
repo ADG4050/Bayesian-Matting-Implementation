@@ -2,13 +2,14 @@ import numpy as np
 
 # Implementation of orchard bouman clustering in 1991 by Orchard and Bouman
 
+
 class Node(object):
 
     '''
     Input:
     matrix: a numpy array of size nxd, representing a set of n d-dimensional data points.
     w: a numpy array of size n, representing the weight for each data point in matrix.
-    
+
     Output:
     An instance of the Node class.
 
@@ -33,7 +34,6 @@ class Node(object):
         V, D = np.linalg.eig(self.cov)
         self.lmbda = np.max(np.abs(V))
         self.e = D[np.argmax(np.abs(V))]
-
 
 
 def clustFunc(S, w, minVar=0.05):
@@ -75,7 +75,7 @@ def split(nodes):
 
     Output:
     nodes: a list of Node objects after splitting the node with the highest value of lambda
-    
+
     Basic Function:
     This function takes a list of Node objects as input and identifies the node with the highest value of lambda. The node is split into two separate nodes
     based on a condition where the dot product of the node's data with its eigenvector is compared to the dot product of the node's mean with its eigenvector. 
