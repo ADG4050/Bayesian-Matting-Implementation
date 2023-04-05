@@ -8,7 +8,9 @@ from Baysian_Mat import Bayesian_Matte
 from PIL import Image, ImageOps
 import time  # Execution TIme imports
 import psutil
+import unittest
 
+import Unittest
 from laplac import Laplacianmatting
 from compositing import compositing
 from QualityTest import mse2d

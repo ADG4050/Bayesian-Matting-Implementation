@@ -9,9 +9,9 @@ from Baysian_Mat import calcsurr_alpha
 from orchard_bouman_clust import clustFunc
 
 
-image = np.array(Image.open("C:/Users/aduttagu/Desktop/Bayesian-Matting-Implementation/input_training_lowres/GT06.png"))
-image_trimap = np.array(ImageOps.grayscale(Image.open("C:/Users/aduttagu/Desktop/Bayesian-Matting-Implementation/trimap_training_lowres/Trimap1/GT06.png")))
-background = np.array(Image.open('C:/Users/aduttagu/Desktop/Bayesian-Matting-Implementation/background.png'))
+image = np.array(Image.open("C:/Users/aduttagu/Desktop/Main/Bayesian-Matting-Implementation/Image Dataset/input_training_lowres/GT01.png"))
+image_trimap = np.array(ImageOps.grayscale(Image.open("C:/Users/aduttagu/Desktop/Main/Bayesian-Matting-Implementation/Image Dataset/trimap_training_lowres/Trimap1/GT01.png")))
+background = np.array(Image.open('C:/Users/aduttagu/Desktop/Main/Bayesian-Matting-Implementation/bayesian-Matting-Python/background.png'))
 
 
 alpha,pixel_count = Bayesian_Matte(image,image_trimap) 
