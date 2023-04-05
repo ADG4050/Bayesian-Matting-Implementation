@@ -4,9 +4,9 @@ Author - Group : Yin Yang Artistic Chaos (Yuning, Abhishek, Chai Jie)
 
 The following project implements Bayesian Matting, stress tests its algorithms in forms of various unit and end to end tests and checks for novel solutions of improvement. The Main implementation is done in Python, however the main algorithm and performance metric functions have also been implemented in MATLAB. Please refer specific folders for MATLAB and Python code. The following project is part of 5c22 Computational Method course, taught as a part of Msc course in Trinity College Dublin.
 
-A glimpse of how the output of the program looks, then sail through
+A glimpse of how the output of the program looks.
 
-<img src="Figure_2.png" width="650">
+<img src="Figure_2.png" width="850">
 
 ---
 
@@ -98,14 +98,14 @@ Five unittests are used in this Bayesian matting project to check the functional
 
 Three e2e tests are used in this Bayesian matting project to check the complete functionality of the algorithm.
 1) Alpha matte comparsion between Bayesian matting and Laplacian matting : A comparision is made between the bayesian and the laplacian alpha matte's. The Laplacian matte is done using the inbuilt cv2 laplacian function. Bayesian being the probabilistic method, a higher matte performance is expected. MSE, PSNR and SAD with image base being (0-255), is used to prove that bayesian is better. A table showing the PSNR, SAD and MSE and grpah below confirms the results obtained. 
-<img src="table1.JPG" width="750">
+<img src="table1.JPG" width="850">
 
 
 2. Performance evaluation.
 
 i) low resolution trimap 1 vs trimap 2 : Here the test is performed with different Trimaps for the same image, with Trimap 2 having more unknown regions compared to Trimap 1. The PSNR, SAD and MSE is comapred along with time taken and memeory consumed throughout. A graph and table is shown below showing the results. 
 
-<img src="table2.JPG" width="750">
+<img src="table2.JPG" width="850">
 <img src="graph2.jpeg" width="600">
 
 ii) High resolution trimap vs low resolution trimap : For same images, trimap with higher resolution is comapred, having almost 6X more unknown points and results are tabled and plotted.  
@@ -122,7 +122,7 @@ To have an overall summary, the the alogorithm works very well for low resolutio
 iv) Window size selection : An optimal test is performed to select the best N, however a range winthin 55 - 125, is optimal keeping mse and execution time in mind, as by unncessary increasing window size, might lead to more computations.
 The graph below shows the performance window size vs PSNR. 
 
-<img src="NvsPSNR.png" width="450">
+<img src="NvsPSNR.PNG" width="450">
 
 
 3. Comparing the two histograms between input image and composited image :
