@@ -106,11 +106,11 @@ Three e2e tests are used in this Bayesian matting project to check the complete 
 i) low resolution trimap 1 vs trimap 2 : Here the test is performed with different Trimaps for the same image, with Trimap 2 having more unknown regions compared to Trimap 1. The PSNR, SAD and MSE is comapred along with time taken and memeory consumed throughout. A graph and table is shown below showing the results. 
 
 <img src="table2.JPG" width="850">
-<img src="graph2.jpeg" width="600">
+<img src="graph1.jpeg" width="600">
 
 ii) High resolution trimap vs low resolution trimap : For same images, trimap with higher resolution is comapred, having almost 6X more unknown points and results are tabled and plotted.  
 
-<img src="graph1.jpeg" width="600">
+<img src="graph2.jpeg" width="600">
 
 iii) Hidden Ground truth images (Stress images) : These tests are performed on  images where foreground and background are similar, difficult to differentiate. Since no ground truth is available, the images are observed visually. The Matte works perfectly for normal textures, but fails for hair like structures.
 
