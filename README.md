@@ -122,7 +122,7 @@ To have an overall summary, the the alogorithm works very well for low resolutio
 iv) Window size selection : An optimal test is performed to select the best N, however a range winthin 55 - 125, is optimal keeping mse and execution time in mind, as by unncessary increasing window size, might lead to more computations.
 The graph below shows the performance window size vs PSNR. 
 
-<img src="NvsPSNR.PNG" width="450">
+<img src="NvsPSNR.png" width="450">
 
 
 3. Comparing the two histograms between input image and composited image :
