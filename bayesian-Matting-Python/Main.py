@@ -24,11 +24,11 @@ Memstart = psutil.Process().memory_info().rss / (1024 ** 2)
 
 # Step 1 : Read image, GT and trimap.
 image = np.array(Image.open(
-    "C:/Users/aduttagu/Desktop/Main/Bayesian-Matting-Implementation/Image Dataset/input_training_lowres/GT01.png"))
+    "C:/Users/aduttagu/Desktop/Main/Bayesian-Matting-Implementation/Image Dataset/input_training_lowres/GT02.png"))
 image_trimap = np.array(ImageOps.grayscale(Image.open(
-    "C:/Users/aduttagu/Desktop/Main/Bayesian-Matting-Implementation/Image Dataset/trimap_training_lowres/Trimap1/GT01.png")))
+    "C:/Users/aduttagu/Desktop/Main/Bayesian-Matting-Implementation/Image Dataset/trimap_training_lowres/Trimap1/GT12C.png")))
 GT = np.array(ImageOps.grayscale(Image.open(
-    "C:/Users/aduttagu/Desktop/Main/Bayesian-Matting-Implementation/Image Dataset/gt_training_lowres/GT01.png")))
+    "C:/Users/aduttagu/Desktop/Main/Bayesian-Matting-Implementation/Image Dataset/gt_training_lowres/GT02.png")))
 
 # Start time for computing the execution time
 st = time.time()
