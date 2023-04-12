@@ -9,8 +9,7 @@ from PIL import Image, ImageOps
 #background = np.array(Image.open('C:/Users/aduttagu/Desktop/Bayesian-Matting-Implementation/background.png'))
 
 
-def compositing(img, alpha, background): 
-
+def compositing(img, alpha, background):
     '''
     Args:
     img (numpy.ndarray): A 3D numpy array representing the foreground image with dimensions (height, width, channels).
@@ -43,11 +42,6 @@ def compositing(img, alpha, background):
 
 
 #comp = compositing(image, image_trimap,background)
-#plt.imshow(comp)
-#plt.show()
+# plt.imshow(comp)
+# plt.show()
 
-
-
-
-
-# %%

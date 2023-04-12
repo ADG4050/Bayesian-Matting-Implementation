@@ -29,7 +29,7 @@ def matlab_style_gauss2d(shape=(3, 3), sigma=0.5):
     # calculate half of the shape for indexing
     m, n = [(ss - 1) / 2. for ss in shape]
     # create a meshgrid of x and y values using the shape
-    y, x = np.ogrid[-m : m + 1, -n : n + 1]
+    y, x = np.ogrid[-m: m + 1, -n: n + 1]
     # calculate the exponential factor of the Gaussian function
     h = np.exp(-(x * x + y * y) / (2. * sigma * sigma))
     # set values close to 0 to exactly 0 to improve performance
@@ -42,7 +42,7 @@ def matlab_style_gauss2d(shape=(3, 3), sigma=0.5):
     return h
 
 
-def calcsurr_alpha(m, x, y, N = 75):
+def calcsurr_alpha(m, x, y, N):
     '''
     Input:
     m: a numpy array of shape (h, w, c) representing an image.
@@ -61,9 +61,9 @@ def calcsurr_alpha(m, x, y, N = 75):
     '''
 
     # Get the height, width, and number of channels of the image
-    h, w, c = m.shape            
+    h, w, c = m.shape
     # Calculate the half of the window size
-    halfN = N // 2                     
+    halfN = N // 2
     # Initialize an empty window of size (N, N, c)
     r = np.zeros((N, N, c))
     # Calculate the indices of the sub-image to be extracted
@@ -72,11 +72,14 @@ def calcsurr_alpha(m, x, y, N = 75):
     ymin = max(0, y - halfN)
     ymax = min(h, y + halfN + 1)
     # Extract the sub-image and store it in the window
-    r[halfN - (y - ymin) : halfN + (ymax - y), halfN - (x - xmin) : halfN + (xmax - x)] = m[ymin : ymax, xmin : xmax]
+    r[halfN - (y - ymin): halfN + (ymax - y), halfN - (x - xmin)
+               : halfN + (xmax - x)] = m[ymin: ymax, xmin: xmax]
     # Return the window
     return r
 
-#@jit(nopython=True, cache=True)
+# @jit(nopython=True, cache=True)
+
+
 def eqntn(mu_F, Sigma_F, mu_B, Sigma_B, C, Sigma_C, alpha_init, maxIter=50, minLike=1e-6):
     '''
     Estimates the foreground (F), background (B), and alpha values for a given input image Chan using a Gaussian mixture model.
@@ -118,8 +121,8 @@ def eqntn(mu_F, Sigma_F, mu_B, Sigma_B, C, Sigma_C, alpha_init, maxIter=50, minL
     invsgma2 = 1/Sigma_C ** 2
 
     # These lines set up a nested loop structure. The outer loop iterates over the rows of the mu_F array. For each row, it sets mu_Fi to the current row,
-    #  and invSigma_Fi to the inverse of the corresponding row of Sigma_F. The inner loop iterates over the rows of the mu_B array, and sets mu_Bj and 
-    # invSigma_Bj in a similar way. It also initializes several variables for the inner loop: alpha is set to alpha_init, myiter is set to 1, and lastLike is set 
+    #  and invSigma_Fi to the inverse of the corresponding row of Sigma_F. The inner loop iterates over the rows of the mu_B array, and sets mu_Bj and
+    # invSigma_Bj in a similar way. It also initializes several variables for the inner loop: alpha is set to alpha_init, myiter is set to 1, and lastLike is set
     # to a very large negative number.
 
     for i in range(mu_F.shape[0]):
@@ -183,7 +186,7 @@ def eqntn(mu_F, Sigma_F, mu_B, Sigma_B, C, Sigma_C, alpha_init, maxIter=50, minL
     return F_Max, B_Max, alpha_Max
 
 
-def Bayesian_Matte(img, trimap, N = 75, MaxN = 405, sigma = 8, minN = 10):
+def Bayesian_Matte(img, trimap, N, MaxN=405, sigma=8, minN=10):
     '''
     Input:
     img: a numpy array representing the input image with dimensions (height, width, channels)
@@ -191,11 +194,11 @@ def Bayesian_Matte(img, trimap, N = 75, MaxN = 405, sigma = 8, minN = 10):
     sigma: an integer value (default 8) representing the standard deviation of the Gaussian function used for calculating the weights of the unknown pixels
     N: an integer value (default 125) representing the size of the window used for calculating the weights of the surrounding pixels
     minN: an integer value (default 10) representing the minimum number of surrounding pixels needed for clustering
-    N_max: an integer value (default 175) representing the maximum window size used when increasing the window size due to insufficient surrounding pixels for clustering
-    
+    N_max: an integer value (default 405) representing the maximum window size used when increasing the window size due to insufficient surrounding pixels for clustering
+
     Output:
     alpha: a numpy array representing the computed matte image with dimensions (height, width)
-    
+
     Basic Function:
     The function computes the matte image using the Bayesian matting algorithm. It initializes an alpha matrix of zeros with the same dimensions as the input image, 
     creates separate logical matrices for the foreground, background, and unknown regions of the trimap, creates three channels for the foreground and background 
@@ -204,7 +207,7 @@ def Bayesian_Matte(img, trimap, N = 75, MaxN = 405, sigma = 8, minN = 10):
     the alpha values for the unknown pixels, and updates the alpha matrix. The function returns the computed matte image.
     '''
 
-    # Step 1 : Images are converted to float, so that all operations can be performed and then converted to (0-1) from (0-255), with h, w, c being image dimensions 
+    # Step 1 : Images are converted to float, so that all operations can be performed and then converted to (0-1) from (0-255), with h, w, c being image dimensions
     img = np.array(img, dtype='float')
     trimap = np.array(trimap, dtype='float')
     img = img / 255
@@ -212,12 +215,12 @@ def Bayesian_Matte(img, trimap, N = 75, MaxN = 405, sigma = 8, minN = 10):
     h, w, c = img.shape
 
     # Step 2: As per the bayesian matting paper, guassian falloff is used for weighting each pixel neighborhood range set earlier.
-    # This creates a gaussian filter of size N x N, that can be applied to the image, given the image follows normal distribution. 
+    # This creates a gaussian filter of size N x N, that can be applied to the image, given the image follows normal distribution.
     gaussian_wght = matlab_style_gauss2d((N, N), sigma)
     gaussian_wght /= np.max(gaussian_wght)
 
-    # Step 3 : Here, FG_A and BG_A represent the foreground and background regions of an image based on a provided trimap. First, the foreground region is 
-    # defined by selecting pixels in the trimap with a value of 1 and assigning the corresponding pixels in the original image to FG_A. Similarly, 
+    # Step 3 : Here, FG_A and BG_A represent the foreground and background regions of an image based on a provided trimap. First, the foreground region is
+    # defined by selecting pixels in the trimap with a value of 1 and assigning the corresponding pixels in the original image to FG_A. Similarly,
     # the background region is defined by selecting pixels with a value of 0 in the trimap and assigning the corresponding pixels in the original image to BG_A.
     fg_reg = trimap == 1
     FG_A = np.zeros((h, w, c))
@@ -232,11 +235,10 @@ def Bayesian_Matte(img, trimap, N = 75, MaxN = 405, sigma = 8, minN = 10):
     Al_pha[fg_reg] = 1
     Al_pha[unkmask] = np.nan
 
-
     # Step 5 : - Creating a sum of all the unknown pixels
     n_unknown = np.sum(unkmask)
 
-    # Step 6 : Finding and storing the pixel values that have not been solved in a 3D Array, with first and second column having x and y co-ordinate and third column having 
+    # Step 6 : Finding and storing the pixel values that have not been solved in a 3D Array, with first and second column having x and y co-ordinate and third column having
     # logical visiting status.
     Xx, Yy = np.where(unkmask == True)
     remain_n = np.vstack((Xx, Yy, np.zeros(Xx.shape))).T
@@ -257,9 +259,10 @@ def Bayesian_Matte(img, trimap, N = 75, MaxN = 405, sigma = 8, minN = 10):
                 y, x = map(int, remain_n[i, :2])
 
                 # taking the surrounding pixel values around that pixel. (Used get_window Function to calaculate surrounding values)
-                a_window = calcsurr_alpha(Al_pha[:, :, np.newaxis], x, y, N)[:, :, 0]
+                a_window = calcsurr_alpha(
+                    Al_pha[:, :, np.newaxis], x, y, N)[:, :, 0]
 
-                # Taking the surrounding pixel values around that pixel in foreground region. (Used get_window Function to calaculate surrounding values). 
+                # Taking the surrounding pixel values around that pixel in foreground region. (Used get_window Function to calaculate surrounding values).
                 # Then Calculating weights of that pixel = unknown pixel matrix squared X gausian matrix and then is structured as required.
                 fg_window = calcsurr_alpha(FG_A, x, y, N)
                 fg_weights = np.reshape(a_window**2 * gaussian_wght, -1)
@@ -267,7 +270,7 @@ def Bayesian_Matte(img, trimap, N = 75, MaxN = 405, sigma = 8, minN = 10):
                 fg_pixels = np.reshape(fg_window, (-1, 3))[values_to_keep, :]
                 fg_weights = fg_weights[values_to_keep]
 
-                # taking the surrounding pixel values around that pixel in background region. (Used calcsurr_alpha Function to calaculate surrounding values. 
+                # taking the surrounding pixel values around that pixel in background region. (Used calcsurr_alpha Function to calaculate surrounding values.
                 # Then Calculating weights of that pixel = (1 - unknown pixel matrix) squared X gausian matrix and then is structured as required.
                 bg_window = calcsurr_alpha(BG_A, x, y, N)
                 bg_weights = np.reshape((1-a_window)**2 * gaussian_wght, -1)
@@ -279,7 +282,7 @@ def Bayesian_Matte(img, trimap, N = 75, MaxN = 405, sigma = 8, minN = 10):
                 if len(bg_weights) < minN or len(fg_weights) < minN:
                     continue
 
-                # If enough pixels, Partitioning the foreground and background pixels (in a weighted manner with a clustering function) and calculate 
+                # If enough pixels, Partitioning the foreground and background pixels (in a weighted manner with a clustering function) and calculate
                 # the mean and variance of the cluster.
                 mean_fg, cov_fg = clustFunc(fg_pixels, fg_weights)
                 mean_bg, cov_bg = clustFunc(bg_pixels, bg_weights)
@@ -299,16 +302,14 @@ def Bayesian_Matte(img, trimap, N = 75, MaxN = 405, sigma = 8, minN = 10):
                     print("Successfully Calculated : {} out of unknown Pixels : {}.".format(
                         np.sum(remain_n[:, 2]), len(remain_n)))
 
-
         # The remaining pixel values which are unsolved are passed again with increasing window size with a Max window limit given.
         if sum(remain_n[:, 2]) == last_n:
             N = N + 10
             if (N == MaxN):
-                n_unknown = sum(remain_n[:, 2])   
-            
+                n_unknown = sum(remain_n[:, 2])
+
             gaussian_wght = matlab_style_gauss2d((N, N), sigma)
             gaussian_wght /= np.max(gaussian_wght)
             print(N)
 
     return Al_pha, n_unknown
-
