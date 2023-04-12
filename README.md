@@ -89,10 +89,16 @@ Here we mainly discuss the unit tests and End to end tests used for testing out 
 Five unittests are used in this Bayesian matting project to check the functionality of the important parts individually.
 
 1) Input Image Dimension check : This unit test confirms that the input image is of a three dimension image, which implies a grayscale image cannot be used as an input image.
+
 2) Composite and Input Image Size check : This unit test checks the size and shape of input image and compositing image, confirming them to be same. This is in response to external background images being of different sizes and are trimmed or  expanded to the Input Image size.
+
 3) Height and Width of Alpha Image check : This checks the height and weight of input image and alpha matte and confirms that they are same. This is one of function which confirms that Bayesian Matting output is correct provided they have the same image. 
+
 4) Window size check : This checks and confirms the neighborhood window function in bayesian matting function, by confirming that the window function output is same as the selected window size. 
+
 5) Mean and Co - Variance check: This pre-checks the orchard bouman function, as becuase the mean value for a single unknown region pixel should be a [3 X 1]Matrix and the co-variance matrix should be a [3 X 3] matrix. This confirms the same.
+
+6) Different Image and Trimap Same size test: This test is required when different images and trimap are selected however they end up being of same size. A likelihood matte is estimated from the image only and compared with the trimap, if it matches in similarity it passes, else fails and the program is too run with correct trimap.
 
 **End to End tests**
 
