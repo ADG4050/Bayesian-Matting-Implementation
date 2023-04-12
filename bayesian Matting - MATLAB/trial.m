@@ -306,25 +306,7 @@ title('Laplacian Matting - Compositing');
 
 disp(['Elapsed time: ', num2str(elapsedTime), ' seconds'])
 
-% Split the image into its RGB channels
-r = image(:,:,1);
-g = image(:,:,2);
-b = image(:,:,3);
 
-% Create a mask where the pixel values meet the specified criteria
-mask = (r >= 10 & r <= 51) & (g >= 20 & g <= 52) & (b >= 34 & b <= 87);
-% Set all other locations in the mask to black except flag
-zeros_matrix = zeros(size(image(:,:,1)));
-zeros_matrix(139:475, 81:337) = mask(139:475, 81:337);
-zeros_matrix(138:154, 124:216) = 0;
-zeros_matrix(293:307, 80:120) = 0;
-change_mat = zeros_matrix;
-% Set all locations in the alpha matte to 1 where changemat is 1
-% Convert the change_mat to a logical data type
-change_mat = logical(change_mat);
-
-% Set all locations in alpha to 1 where change_mat is true
-alpha(change_mat) = 1;
 
 
 

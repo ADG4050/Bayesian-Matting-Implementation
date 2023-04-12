@@ -148,6 +148,10 @@ Initially the plan was to visually compare the similarity between the histograms
 
 <img src="MATvsPY.png" width="650">
 
+5) GT16 Smoothness :- The GT16 image in the dataset is byfar one of the most diffcult images, as the flag becomes transparent in the alpha matte obtained through bayesian technique compared to the Ground Truth. To deal with it a special smoothness technique, limited to GT16 was applied, where the blue component of the flag was identified and in its location a logical array was added to the bayesian matte to smoothen it. The MSE reduces from 3356 to 1352 and shows rapid imporovement, image below.
+
+<img src="GT16s.png" width="700">
+
 ---
 ## Credits
 

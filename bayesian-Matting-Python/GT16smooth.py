@@ -39,6 +39,9 @@ alpha_int8 = np.array(alpha, dtype=int)
 plt.imshow(alpha_disp2, cmap = 'gray')
 plt.show()
 
+Bay_MSE = mse2d(alpha_disp2, GT)
+print("The MSE between the Ground Truth and Bayesian Alpha Matte is :", Bay_MSE)
+
 
 sm_alpha = alpha_disp
 # Split the image into its RGB channels
@@ -60,3 +63,5 @@ sm_alpha[change_mat] = 255
 plt.imshow(sm_alpha, cmap = 'gray')
 plt.show()
 
+smooth_MSE = mse2d(sm_alpha, GT)
+print("The MSE between the Ground Truth and smoothed Matte is :", smooth_MSE)
