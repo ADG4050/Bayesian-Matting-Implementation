@@ -20,7 +20,7 @@ background = np.array(Image.open(
     'C:/Users/aduttagu/Desktop/Main/Bayesian-Matting-Implementation/bayesian-Matting-Python/background.png'))
 
 
-alpha, pixel_count = Bayesian_Matte(image, image_trimap)
+alpha, pixel_count = Bayesian_Matte(image, image_trimap, N = 75)
 alpha_disp = alpha * 255
 alpha_int8 = np.array(alpha, dtype=int)
 

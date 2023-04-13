@@ -6,7 +6,7 @@ from PIL import Image, ImageOps
 
 def smooth(alpha_matte):
     fg = alpha_matte > 125
-    bg = alpha_matte < 75
+    # bg = alpha_matte < 75
 
     unkreg = fg
     kernel = np.ones((2, 2))

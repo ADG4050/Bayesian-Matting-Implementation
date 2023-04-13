@@ -55,7 +55,7 @@ background = np.array(Image.open(
 comp_Bay = compositing(image, alpha_disp, background)
 
 # Step 6 : Smoothening ALpha Methods
-#smooth_alpha = smooth(alpha_disp)
+smooth_alpha = smooth(alpha_disp)
 
 # Step 7 : Displaying THe Bayesian, Laplacian and GT.
 fig, axes = plt.subplots(nrows=1, ncols=3)
@@ -72,8 +72,8 @@ plt.show()
 plt.imshow(comp_Bay)
 plt.show()
 
-# plt.imshow(smooth_alpha)
-# plt.show()
+plt.imshow(smooth_alpha, cmap = 'gray')
+plt.show()
 
 # Part of End to End testing - 1 : Performance Comparision between Laplacian and Bayesian.
 Bay_MSE = mse2d(alpha_disp, GT)
@@ -100,5 +100,5 @@ Memend = psutil.Process().memory_info().rss / (1024 ** 2)
 Memuse = Memend - Memstart
 print("Total memory consumed in execution of this program : ", Memuse, "MB's")
 
-# smooth_alphamse = mse2d(smooth_alpha, GT)
-# print("The MSE between the Ground Truth and smoothed Alpha Matte is :", smooth_alphamse)
+smooth_alphamse = mse2d(smooth_alpha, GT)
+print("The MSE between the Ground Truth and smoothed Alpha Matte is :", smooth_alphamse)
